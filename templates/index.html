@@ -1,0 +1,53 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trending</title>
+    <style> body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f0f0f0; }
+        h1 { background-color: #333; color: #fff; padding: 20px; text-align: center; margin-bottom: 30px; }
+        
+        form { display: flex; flex-direction: column; align-items: center; margin-bottom: 30px; }
+        
+        label { font-size: 20px; margin-bottom: 10px; text-align: center; display: block; width: 100%; }
+        
+        input[type="text"] { border: none; border-radius: 5px; padding: 10px; font-size: 18px; width: 50%; margin-bottom: 20px; }
+        
+        button[type="submit"] { background-color: #333; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; font-size: 18px; cursor: pointer; }
+        
+        #result { background-color: #fff; padding: 20px; width: 50%; margin: 0 auto; margin-top: 30px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        
+        #result p { margin-bottom: 10px; } </style>
+</head>
+<body>
+    <h1>Trending</h1>
+    <img src=r"C:\Users\21624\Desktop\My Area\projetIndexation\logo.png">
+    <form action="/search" method="POST">
+        <label for="artist">Artist:</label>
+        <input type="text" id="artist" name="artist" required>
+        <button type="submit">Search</button>
+    </form>
+    <div id="result"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('form').submit(function(event) {
+            event.preventDefault();
+            var artist = $('#artist').val();
+            $.ajax({
+                url: '/search',
+                type: 'POST',
+                data: {artist: artist},
+                success: function(response) {
+                    $('#result').empty();
+                    $.each(response, function(index, song) {
+                        $('#result').append(`<p>${index + 1}. ${song[0]} (${song[1]} views) - <a href='https://www.youtube.com/watch?v=${song[2]}'>Watch</a></p>`);
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
